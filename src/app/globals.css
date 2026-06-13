@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Premium SaaS Developer Theme: Deep Charcoal & Matte Forest Green */
+    --background: #0f1011;       /* Deep Charcoal canvas */
+    --foreground: #f4f4f5;       /* Crisp off-white text */
+    
+    --card: #16181a;             /* Subtle lighter charcoal for Bento Grid blocks */
+    --card-foreground: #f4f4f5;
+    
+    --primary: #15803d;          /* Forest Green Main Highlights */
+    --primary-hover: #166534;    /* Deeper Forest Green for interaction */
+    
+    --muted: #27272a;            /* Neutral borders and dividers */
+    --muted-foreground: #a1a1aa; /* Secondary/Dimmed text */
   }
 }
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scroller to maintain premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }
