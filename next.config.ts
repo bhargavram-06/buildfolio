@@ -1,11 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbopack: {
-      root: __dirname, // Forces Turbopack to only look inside the buildfolio folder
-    },
-  },
+  /* Core production configuration options go here */
+  reactStrictMode: true,
 };
 
 export default nextConfig;
