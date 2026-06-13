@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 import { BentoCard } from "@/components/bento/BentoCard";
 import { StatsBlock, LanguagesBlock, RepositoriesBlock } from "@/components/bento/BentoGridItems";
-import { Search, LayoutGrid, Palette, CloudUpload, Sparkles, CheckCircle } from "lucide-react";
+import { Search, LayoutGrid, Palette, CloudUpload, Sparkles, CheckCircle, FolderGit2 } from "lucide-react";
 
 export default function Home() {
   const [inputUsername, setInputUsername] = useState("");
@@ -57,7 +57,8 @@ export default function Home() {
         {/* Real-time GitHub Username Search Input */}
         <form onSubmit={handleSearch} className="flex w-full md:w-auto items-center gap-2 bg-[#16181a] border border-[#27272a] rounded-lg p-1.5 focus-within:border-[#15803d] transition-all">
           <div className="flex items-center gap-2 px-2 text-[#a1a1aa]">
-            <Github className="w-4 h-4" />
+            {/* Fixed: Replaced the broken <Github /> with <FolderGit2 /> */}
+            <FolderGit2 className="w-4 h-4 text-[#15803d]" />
           </div>
           <input
             type="text"
