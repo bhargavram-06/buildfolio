@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 import { BentoCard } from "@/components/bento/BentoCard";
 import { StatsBlock, LanguagesBlock, RepositoriesBlock } from "@/components/bento/BentoGridItems";
-import { Search, Github, LayoutGrid, Palette, CloudUpload, Sparkles, CheckCircle } from "lucide-react";
+import { Search, LayoutGrid, Palette, CloudUpload, Sparkles, CheckCircle } from "lucide-react";
 
 export default function Home() {
   const [inputUsername, setInputUsername] = useState("");
