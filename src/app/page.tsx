@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 import { StatsBlock, LanguagesBlock, RepositoriesBlock } from "@/components/bento/BentoGridItems";
-import { Search, Palette, CloudUpload, FolderGit2, CheckCircle, ExternalLink, ShieldCheck, Globe } from "lucide-react";
+import { Search, Palette, CloudUpload, FolderGit2, CheckCircle, ExternalLink, ShieldCheck, Globe, LayoutGrid } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -23,36 +23,38 @@ export default function Home() {
     savePortfolio 
   } = usePortfolioStore();
 
-  // 🎨 MULTI-THEME LIVE CANVAS MATRIX ROUTER
   const [canvasStyles, setCanvasStyles] = useState({
-    background: "bg-[#111214] text-[#f4f4f5]",
-    cardStyle: "bg-[#16181a] border-[#222326]",
-    accentText: "text-[#15803d]",
-    fontFamily: "font-sans"
+    background: "#111214",
+    textColor: "#f4f4f5",
+    cardBg: "#16181a",
+    cardBorder: "#222326",
+    accentColor: "#15803d"
   });
 
-  // Watch the theme state and switch live canvas styles instantly on button clicks
   useEffect(() => {
     if (theme === "Modern Developer") {
       setCanvasStyles({
-        background: "bg-[#090d16] text-[#e2e8f0]",
-        cardStyle: "bg-[#111827] border-emerald-500/20 shadow-md",
-        accentText: "text-emerald-400 font-bold",
-        fontFamily: "font-mono"
+        background: "#090d16",
+        textColor: "#e2e8f0",
+        cardBg: "#111827",
+        cardBorder: "rgba(16,185,129,0.2)",
+        accentColor: "#34d399"
       });
     } else if (theme === "Minimal Professional") {
       setCanvasStyles({
-        background: "bg-[#121212] text-[#fafafa]",
-        cardStyle: "bg-[#1c1c1c] border-zinc-800",
-        accentText: "text-zinc-400 border-b border-zinc-700 pb-0.5",
-        fontFamily: "font-serif"
+        background: "#121212",
+        textColor: "#fafafa",
+        cardBg: "#1c1c1c",
+        cardBorder: "#3f3f46",
+        accentColor: "#a1a1aa"
       });
     } else {
       setCanvasStyles({
-        background: "bg-[#111214] text-[#f4f4f5]",
-        cardStyle: "bg-[#16181a] border-[#222326]",
-        accentText: "text-[#15803d]",
-        fontFamily: "font-sans"
+        background: "#111214",
+        textColor: "#f4f4f5",
+        cardBg: "#16181a",
+        cardBorder: "#222326",
+        accentColor: "#15803d"
       });
     }
   }, [theme]);
@@ -77,99 +79,71 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0b0c0d] text-[#f4f4f5] antialiased font-sans flex flex-col">
+    <div style={{ minHeight: "100vh", backgroundColor: "#0b0c0d", color: "#f4f4f5", display: "flex", flexDirection: "column", boxSizing: "border-box" }}>
       
-      {/* 🧭 NAVIGATION BUILDER DECK CONTROL BAR */}
-      <nav className="w-full bg-[#111214] border-b border-[#222326] px-4 py-3 md:px-8 sticky top-0 z-50 shadow-md">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#15803d]" />
-            <span className="text-xs font-black uppercase tracking-widest text-zinc-300">
-              Buildfolio <span className="text-[#15803d]">Studio</span>
-            </span>
+      {/* 🧭 NAVIGATION DECK CONTROL BAR */}
+      <nav style={{ width: "100%", backgroundColor: "#111214", borderBottom: "1px solid #222326", padding: "12px 24px", boxSizing: "border-box" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#15803d" }} />
+            <span style={{ fontSize: "12px", fontWeight: "900", letterSpacing: "0.1em", color: "#ffffff" }}>BUILDFOLIO STUDIO</span>
           </div>
 
-          <form onSubmit={handleSearch} className="flex w-full sm:w-auto items-center gap-2 bg-[#16181a] border border-[#27272a] rounded-xl p-1 focus-within:border-[#15803d] transition-all">
-            <div className="pl-2.5">
-              <FolderGit2 className="w-3.5 h-3.5 text-[#15803d]" />
-            </div>
+          <form onSubmit={handleSearch} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "8px", padding: "4px 8px" }}>
+            <FolderGit2 style={{ width: "14px", height: "14px", color: "#15803d" }} />
             <input
               type="text"
-              placeholder="Compile public GitHub username..."
+              placeholder="Compile public GitHub username handle..."
               value={inputUsername}
               onChange={(e) => setInputUsername(e.target.value)}
               disabled={isLoading}
-              className="bg-transparent text-xs font-medium focus:outline-none w-full sm:w-52 text-[#f4f4f5] placeholder:text-zinc-600 py-1"
+              style={{ backgroundColor: "transparent", border: "none", outline: "none", fontSize: "12px", color: "#ffffff", width: "240px" }}
             />
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="bg-[#15803d] hover:bg-[#166534] text-white font-bold text-xs px-4 py-1.5 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-            >
-              {isLoading ? "Sync..." : "Generate"}
+            <button type="submit" style={{ backgroundColor: "#15803d", border: "none", color: "#ffffff", fontWeight: "bold", fontSize: "11px", padding: "6px 12px", borderRadius: "6px", cursor: "pointer" }}>
+              {isLoading ? "Syncing..." : "Generate"}
             </button>
           </form>
         </div>
       </nav>
 
-      {/* 💼 WORKSPACE CONTROL ROOM */}
-      <div className="max-w-5xl mx-auto w-full px-4 pt-6 space-y-4">
-        
-        {/* URL Sync Export Banner Box */}
+      {/* 💼 STATUS NOTIFICATIONS BAR */}
+      <div style={{ maxWidth: "1100px", width: "100%", margin: "0 auto", padding: "16px 24px 0 24px", boxSizing: "border-box" }}>
         {generatedLink && (
-          <div className="w-full bg-[#111612] border border-[#15803d]/30 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 animate-fadeIn shadow-lg">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+          <div style={{ width: "100%", backgroundColor: "#111612", border: "1px solid rgba(21,128,61,0.3)", borderRadius: "12px", padding: "16px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <CheckCircle style={{ width: "18px", height: "18px", color: "#10b981", flexShrink: 0 }} />
               <div>
-                <p className="text-xs font-bold text-white uppercase tracking-wider">Portfolio Live & Saved</p>
-                <p className="text-xs text-zinc-400 font-mono mt-0.5 break-all">{generatedLink}</p>
+                <p style={{ fontSize: "11px", fontWeight: "bold", color: "#ffffff", margin: 0, textTransform: "uppercase" }}>Portfolio Synced Online</p>
+                <p style={{ fontSize: "11px", color: "#a1a1aa", fontFamily: "monospace", margin: "2px 0 0 0" }}>{generatedLink}</p>
               </div>
             </div>
-            <div className="flex gap-2 w-full sm:w-auto shrink-0">
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(generatedLink);
-                  alert("Link copied!");
-                }}
-                className="bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold px-3 py-1.5 rounded-md cursor-pointer"
-              >
-                Copy Link
-              </button>
-              <Link
-                href={`/${profile?.username.toLowerCase()}`}
-                target="_blank"
-                className="bg-[#15803d] hover:bg-[#166534] text-white text-xs font-bold px-3 py-1.5 rounded-md flex items-center gap-1"
-              >
-                View Page <ExternalLink className="w-3 h-3" />
-              </Link>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button onClick={() => { navigator.clipboard.writeText(generatedLink); alert("Copied!"); }} style={{ backgroundColor: "#27272a", border: "none", color: "#ffffff", fontSize: "11px", fontWeight: "bold", padding: "6px 12px", borderRadius: "6px", cursor: "pointer" }}>Copy URL</button>
+              <Link href={`/${profile?.username.toLowerCase()}`} target="_blank" style={{ backgroundColor: "#15803d", color: "#ffffff", textDecoration: "none", fontSize: "11px", fontWeight: "bold", padding: "6px 12px", borderRadius: "6px", display: "flex", alignItems: "center", gap: "4px" }}>View Page <ExternalLink style={{ width: "12px", height: "12px" }} /></Link>
             </div>
           </div>
         )}
 
         {error && (
-          <div className="w-full bg-red-950/20 border border-red-900/40 text-red-400 p-3 rounded-xl text-xs text-center font-semibold">
+          <div style={{ width: "100%", backgroundColor: "#3f1a1a", border: "1px solid #7f1d1d", color: "#f87171", padding: "12px", borderRadius: "12px", fontSize: "12px", textAlign: "center", fontWeight: "600" }}>
             ⚠️ {error}
           </div>
         )}
 
-        {/* Theme Modifiers Deck - HIGH CONTRAST TEXT & VISIBILITY */}
+        {/* Theme Modifiers Deck */}
         {profile && !isLoading && (
-          <div className="w-full bg-[#121315] border border-[#222326] rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-            <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto py-0.5">
-              <div className="flex items-center gap-1 text-zinc-300 text-xs font-bold uppercase tracking-wider shrink-0">
-                <Palette className="w-3.5 h-3.5 text-[#15803d]" />
-                <span>Theme Mixer:</span>
+          <div style={{ width: "100%", backgroundColor: "#121315", border: "1px solid #222326", borderRadius: "12px", padding: "12px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: "bold", color: "#ffffff", textTransform: "uppercase" }}>
+                <Palette style={{ width: "14px", height: "14px", color: "#15803d" }} />
+                <span>Theme Matrix Mixer:</span>
               </div>
-              <div className="flex gap-1.5 shrink-0">
+              <div style={{ display: "flex", gap: "8px" }}>
                 {(["Silent Coder", "Modern Developer", "Minimal Professional"] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTheme(t)}
-                    className={`text-xs px-2.5 py-1.5 font-bold rounded-lg border transition-all cursor-pointer ${
-                      theme === t
-                        ? "bg-[#15803d] text-white border-[#15803d] shadow"
-                        : "bg-[#1c1e22] text-zinc-100 border-[#2d3139] hover:border-zinc-500"
-                    }`}
+                    style={{ backgroundColor: theme === t ? "#15803d" : "#1e2022", color: "#ffffff", border: theme === t ? "1px solid #15803d" : "1px solid #3a3f47", fontSize: "11px", fontWeight: "bold", padding: "6px 12px", borderRadius: "6px", cursor: "pointer" }}
                   >
                     {t}
                   </button>
@@ -177,122 +151,106 @@ export default function Home() {
               </div>
             </div>
 
-            <button
-              onClick={handlePublish}
-              disabled={saveStatus === "saving"}
-              className="w-full sm:w-auto bg-[#15803d] hover:bg-[#166534] text-white text-xs font-bold uppercase tracking-wide px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shadow"
-            >
-              <CloudUpload className="w-3.5 h-3.5" />
-              {saveStatus === "saving" ? "Publishing..." : "Publish Portfolio"}
+            <button onClick={handlePublish} disabled={saveStatus === "saving"} style={{ backgroundColor: "#15803d", color: "#ffffff", border: "none", fontSize: "11px", fontWeight: "bold", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+              <CloudUpload style={{ width: "14px", height: "14px" }} />
+              {saveStatus === "saving" ? "Saving..." : "Publish Portfolio Setup"}
             </button>
           </div>
         )}
       </div>
 
-      {/* 🖼️ REAL-TIME PREVIEW WORKSPACE DECK */}
-      <div className="max-w-5xl mx-auto w-full px-4 pb-20 flex-1 flex flex-col mt-4">
+      {/* 🖼️ CORE LIVE VIEW PREVIEW CANVAS DISPLAY */}
+      <div style={{ maxWidth: "1100px", width: "100%", margin: "16px auto 0 auto", padding: "0 24px 48px 24px", flex: "1", display: "flex", flexDirection: "column", boxSizing: "border-box" }}>
         
         {!profile && !isLoading && (
-          <div className="text-center py-28 space-y-2 max-w-sm mx-auto flex-1 flex flex-col justify-center">
-            <FolderGit2 className="w-8 h-8 text-zinc-700 mx-auto" />
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Workspace Empty</h3>
-            <p className="text-xs text-zinc-500">Enter your GitHub profile username in the nav deck controller above.</p>
+          <div style={{ textAlign: "center", margin: "auto", padding: "64px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <LayoutGrid style={{ width: "32px", height: "32px", color: "#27272a" }} />
+            <h3 style={{ fontSize: "12px", fontWeight: "bold", color: "#ffffff", textTransform: "uppercase", margin: 0 }}>Workspace Blueprint Empty</h3>
+            <p style={{ fontSize: "11px", color: "#71717a", margin: 0 }}>Input a public user parameter handle in the navigation deck to compile codebase metrics.</p>
           </div>
         )}
 
         {isLoading && (
-          <div className="text-center py-32 space-y-2 flex-1 flex flex-col justify-center">
-            <div className="w-5 h-5 border-2 border-[#15803d] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs text-zinc-600 font-mono tracking-widest">COMPILING VERSION SCHEMAS FROM ATOM RECOS...</p>
+          <div style={{ textAlign: "center", margin: "auto", padding: "64px 0" }}>
+            <p style={{ fontSize: "11px", color: "#a1a1aa", fontFamily: "monospace", letterSpacing: "0.1em" }}>EXTRACTING DEVELOPER TELEMETRY CHANNELS...</p>
           </div>
         )}
 
-        {/* THE REAL PORTFOLIO SETUP LIVE CANVAS GRID */}
         {profile && !isLoading && statistics && (
-          <div className="space-y-4 w-full animate-fadeIn">
+          <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "16px" }}>
             
-            <div className="border-l-2 border-[#15803d] pl-2.5 py-0.5">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">Live Canvas Screen View</h2>
-            </div>
+            <p style={{ fontSize: "11px", fontWeight: "bold", color: "#a1a1aa", textTransform: "uppercase", margin: 0, borderLeft: "2px solid #15803d", paddingLeft: "8px" }}>
+              Live Workspace Canvas Screen View
+            </p>
 
-            {/* LIVE REACTIVE CONTAINER BASE */}
-            <div className={`w-full rounded-xl p-5 border border-[#222326] transition-all duration-300 shadow-xl ${canvasStyles.background} ${canvasStyles.fontFamily} space-y-5`}>
+            {/* LIVE DYNAMIC SYSTEM WRAPPER CONTAINER BLOCK */}
+            <div style={{ backgroundColor: canvasStyles.background, color: canvasStyles.textColor, border: "1px solid #222326", borderRadius: "16px", padding: "24px", display: "flex", flexDirection: "column", gap: "20px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.5)" }}>
               
-              {/* Top Layout Heading Header */}
-              <div className="flex items-center justify-between border-b border-zinc-800/50 pb-2.5 text-[10px] font-mono tracking-wider font-bold text-zinc-500">
-                <div className="flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#15803d]" />
+              {/* Internal Info bar */}
+              <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "10px", fontSize: "10px", fontFamily: "monospace", fontWeight: "bold", color: "#71717a" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <ShieldCheck style={{ width: "14px", height: "14px", color: "#15803d" }} />
                   <span>BUILDFOLIO // VERIFIED_PROOF_OF_WORK</span>
                 </div>
-                <span className="bg-zinc-900 border border-zinc-800 text-[#15803d] px-1.5 py-0.5 rounded text-[9px]">
-                  {theme}
-                </span>
+                <span style={{ backgroundColor: "#0f1011", color: "#15803d", border: "1px solid #27272a", padding: "1px 6px", borderRadius: "4px" }}>{theme}</span>
               </div>
 
-              {/* 📐 TWO-COLUMN MAIN ALIGNMENT GRID CONTAINER */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+              {/* TWO-COLUMN GRID ROW LAYOUT */}
+              <div style={{ display: "flex", gap: "20px", flexDirection: "row", flexWrap: "wrap", width: "100%", alignItems: "flex-start" }}>
                 
-                {/* 1. LEFT SIDEBAR COLUMN */}
-                <div className="lg:col-span-1 flex flex-col gap-5 w-full">
+                {/* COLUMN LEFT: Tight Sidebar Blocks */}
+                <div style={{ flex: "1", minWidth: "280px", maxWidth: "340px", display: "flex", flexDirection: "column", gap: "20px" }}>
                   
-                  {/* DEVELOPER CONTEXT: Cleaned and shrunk down significantly */}
-                  <div className={`rounded-xl p-4 border transition-all ${canvasStyles.cardStyle} space-y-3`}>
-                    <p className="text-[9px] uppercase font-bold tracking-widest text-zinc-500">Developer Context</p>
-                    <div className="flex items-center gap-2.5 border-b border-zinc-800/40 pb-2">
-                      {/* Fixed Small Shrunk Icon Badge */}
-                      <img 
-                        src={profile.avatarUrl} 
-                        alt={profile.name} 
-                        className="w-10 h-10 rounded-lg border border-zinc-800 bg-[#0c0d0e] object-cover shrink-0" 
-                      />
-                      <div className="truncate">
-                        <h3 className="text-xs font-black tracking-tight text-white truncate leading-tight">{profile.name}</h3>
-                        <p className={`text-[10px] font-mono mt-0.5 ${canvasStyles.accentText}`}>@{profile.username}</p>
+                  {/* DEVELOPER CONTEXT COMPACT BADGE */}
+                  <div style={{ backgroundColor: canvasStyles.cardBg, border: `1px solid ${canvasStyles.cardBorder}`, borderRadius: "12px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <p style={{ fontSize: "10px", color: "#71717a", fontWeight: "bold", textTransform: "uppercase", margin: 0 }}>Developer Context</p>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      
+                      {/* FIXED BOX CONSTRAINT FOR IMAGE AVATAR */}
+                      <div style={{ width: "44px", height: "44px", borderRadius: "8px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "#0c0d0e", flexShrink: 0 }}>
+                        <img src={profile.avatarUrl} alt={profile.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                      
+                      <div style={{ overflow: "hidden" }}>
+                        <h3 style={{ fontSize: "13px", fontWeight: "bold", color: "#ffffff", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{profile.name}</h3>
+                        <p style={{ fontSize: "11px", color: canvasStyles.accentColor, fontFamily: "monospace", margin: "2px 0 0 0" }}>@{profile.username}</p>
                       </div>
                     </div>
-                    <p className="text-[10px] text-zinc-400 leading-relaxed">
+                    <p style={{ fontSize: "11px", color: "#a1a1aa", margin: 0, backgroundColor: "rgba(0,0,0,0.2)", padding: "10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.04)", lineHeight: "1.5" }}>
                       {profile.bio}
                     </p>
                   </div>
 
-                  {/* SYNTAX TELEMETRY CARD */}
-                  <div className={`rounded-xl p-4 border transition-all ${canvasStyles.cardStyle}`}>
-                    <p className="text-[9px] uppercase font-bold tracking-widest text-zinc-500 mb-2">Syntax Telemetry</p>
+                  {/* SYNTAX BREAKDOWN CARD */}
+                  <div style={{ backgroundColor: canvasStyles.cardBg, border: `1px solid ${canvasStyles.cardBorder}`, borderRadius: "12px", padding: "16px" }}>
+                    <p style={{ fontSize: "10px", color: "#71717a", fontWeight: "bold", textTransform: "uppercase", margin: "0 0 12px 0" }}>Syntax Telemetry</p>
                     <LanguagesBlock languages={statistics.topLanguages} />
                   </div>
 
                 </div>
 
-                {/* 2. RIGHT MAIN CONTENT COLUMN */}
-                <div className="lg:col-span-2 flex flex-col gap-5 w-full">
-                  
-                  {/* STATS PERFORMANCE RECORDROW */}
-                  <StatsBlock 
-                    totalRepos={statistics.totalProjects} 
-                    stars={statistics.totalStars} 
-                    followers={profile.followers} 
-                  />
+                {/* COLUMN RIGHT: Main Wide Workspace Content */}
+                <div style={{ flex: "2", minWidth: "320px", display: "flex", flexDirection: "column", gap: "20px" }}>
+                  <StatsBlock totalRepos={statistics.totalProjects} stars={statistics.totalStars} followers={profile.followers} />
 
-                  {/* PUBLIC OPEN SOURCE ECOSYSTEM GRID CARD */}
-                  <div className={`rounded-xl p-4 border transition-all ${canvasStyles.cardStyle}`}>
-                    <p className="text-[9px] uppercase font-bold tracking-widest text-zinc-500 mb-2">Ecosystem Public Repositories</p>
+                  <div style={{ backgroundColor: canvasStyles.cardBg, border: `1px solid ${canvasStyles.cardBorder}`, borderRadius: "12px", padding: "16px" }}>
+                    <p style={{ fontSize: "10px", color: "#71717a", fontWeight: "bold", textTransform: "uppercase", margin: "0 0 12px 0" }}>Ecosystem Public Repositories</p>
                     <RepositoriesBlock repos={repositories} />
                   </div>
-
                 </div>
 
               </div>
 
-              {/* Endorsement Footer bar */}
-              <div className="text-center pt-3 border-t border-zinc-800/50 text-[9px] text-zinc-600 flex items-center justify-center gap-1 font-mono tracking-widest">
-                <Globe className="w-3 h-3 text-[#15803d]" /> Powered by Buildfolio Engine Pipeline
+              {/* Endorsement Footer */}
+              <div style={{ textAlign: "center", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", fontSize: "9px", color: "#52525b", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", fontFamily: "monospace", letterSpacing: "0.05em" }}>
+                <Globe style={{ width: "12px", height: "12px", color: "#15803d" }} />
+                <span>POWERED BY BUILDFOLIO ENGINE PIPELINE</span>
               </div>
 
             </div>
-
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
 }

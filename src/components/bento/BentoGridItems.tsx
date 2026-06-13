@@ -3,54 +3,54 @@
 import { useState } from "react";
 import { FolderGit2, Star, GitFork, Users, Search } from "lucide-react";
 
-// 📊 SECTION 1: COUNTERS (Total Projects, Stars, Followers)
+// 📊 METRICS ROW SECTION
 export function StatsBlock({ totalRepos, stars, followers }: any) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
-      <div className="bg-[#121315] border border-[#222326] rounded-xl p-3 flex items-center justify-between">
+    <div style={{ display: "flex", gap: "16px", width: "100%", flexWrap: "wrap", marginBottom: "16px" }}>
+      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyBetween: "space-between", alignItems: "center" }}>
         <div>
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Total Projects</p>
-          <p className="text-lg font-black text-white mt-0.5">{totalRepos || 0}</p>
+          <p style={{ fontSize: "10px", color: "#a1a1aa", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Total Projects</p>
+          <p style={{ fontSize: "20px", fontWeight: "900", color: "#ffffff", margin: "4px 0 0 0" }}>{totalRepos || 0}</p>
         </div>
-        <FolderGit2 className="w-4 h-4 text-[#15803d]" />
+        <FolderGit2 style={{ width: "20px", height: "20px", color: "#15803d" }} />
       </div>
-      <div className="bg-[#121315] border border-[#222326] rounded-xl p-3 flex items-center justify-between">
+      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyBetween: "space-between", alignItems: "center" }}>
         <div>
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Stars Earned</p>
-          <p className="text-lg font-black text-white mt-0.5">{stars || 0}</p>
+          <p style={{ fontSize: "10px", color: "#a1a1aa", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Stars Earned</p>
+          <p style={{ fontSize: "20px", fontWeight: "900", color: "#ffffff", margin: "4px 0 0 0" }}>{stars || 0}</p>
         </div>
-        <Star className="w-4 h-4 text-[#15803d]" />
+        <Star style={{ width: "20px", height: "20px", color: "#15803d" }} />
       </div>
-      <div className="bg-[#121315] border border-[#222326] rounded-xl p-3 flex items-center justify-between">
+      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyBetween: "space-between", alignItems: "center" }}>
         <div>
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Followers</p>
-          <p className="text-lg font-black text-white mt-0.5">{followers || 0}</p>
+          <p style={{ fontSize: "10px", color: "#a1a1aa", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Followers</p>
+          <p style={{ fontSize: "20px", fontWeight: "900", color: "#ffffff", margin: "4px 0 0 0" }}>{followers || 0}</p>
         </div>
-        <Users className="w-4 h-4 text-[#15803d]" />
+        <Users style={{ width: "20px", height: "20px", color: "#15803d" }} />
       </div>
     </div>
   );
 }
 
-// 📈 SECTION 2: SYNTAX METRICS (Language Progress Bars)
+// 📈 SYNTAX TELEMETRY PROGRESS BARS SECTION
 export function LanguagesBlock({ languages }: { languages: any[] }) {
   if (!languages || languages.length === 0) {
-    return <p className="text-xs text-zinc-600 italic p-1">No syntax recorded.</p>;
+    return <p style={{ fontSize: "12px", color: "#a1a1aa", fontStyle: "italic" }}>No distribution logs found.</p>;
   }
   const total = languages.reduce((acc, curr) => acc + curr.count, 0);
 
   return (
-    <div className="space-y-3 w-full pt-1">
+    <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "12px" }}>
       {languages.slice(0, 4).map((lang, idx) => {
         const percentage = total > 0 ? (lang.count / total) * 100 : 0;
         return (
-          <div key={idx} className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-zinc-300 font-semibold text-[11px]">{lang.language}</span>
-              <span className="text-zinc-500 font-mono text-[11px]">{Math.round(percentage)}%</span>
+          <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px" }}>
+              <span style={{ color: "#e4e4e7", fontWeight: "600" }}>{lang.language}</span>
+              <span style={{ color: "#a1a1aa", fontFamily: "monospace" }}>{Math.round(percentage)}%</span>
             </div>
-            <div className="w-full bg-[#0b0c0d] rounded-full h-1.5 border border-[#222326]">
-              <div className="bg-[#15803d] h-1.5 rounded-full" style={{ width: `${percentage}%` }} />
+            <div style={{ width: "100%", backgroundColor: "#0f1011", height: "6px", borderRadius: "999px", border: "1px solid #27272a", overflow: "hidden" }}>
+              <div style={{ backgroundColor: "#15803d", height: "100%", width: `${percentage}%` }} />
             </div>
           </div>
         );
@@ -59,7 +59,7 @@ export function LanguagesBlock({ languages }: { languages: any[] }) {
   );
 }
 
-// 📂 SECTION 3: ECOSYSTEM REPOSITORIES (Clean Filtered Cards)
+// 📂 REPOSITORIES CONTENT SECTION - Forced visible links and clear layouts
 export function RepositoriesBlock({ repos }: { repos: any[] }) {
   const [query, setQuery] = useState("");
 
@@ -69,19 +69,21 @@ export function RepositoriesBlock({ repos }: { repos: any[] }) {
   );
 
   return (
-    <div className="space-y-3 w-full">
-      <div className="flex items-center gap-2 bg-[#0b0c0d] border border-[#222326] rounded-lg px-2.5 py-1.5 focus-within:border-[#15803d]/60 transition-all">
-        <Search className="w-3.5 h-3.5 text-zinc-600 shrink-0" />
+    <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "12px" }}>
+      {/* Explicitly Configured Search Bar Input Box */}
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: "#0f1011", border: "1px solid #27272a", borderRadius: "8px", padding: "8px 12px" }}>
+        <Search style={{ width: "14px", height: "14px", color: "#a1a1aa" }} />
         <input
           type="text"
-          placeholder="Filter repositories..."
+          placeholder="Filter repositories by keyword handle..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="bg-transparent text-xs text-white focus:outline-none w-full placeholder:text-zinc-700 font-medium"
+          style={{ backgroundColor: "transparent", border: "none", outline: "none", fontSize: "12px", color: "#ffffff", width: "100%" }}
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 h-[210px] overflow-y-auto custom-scrollbar pr-0.5">
+      {/* Grid container with hardcoded alignments */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "12px", maxHeight: "250px", overflowY: "auto", paddingRight: "4px" }}>
         {filtered.length > 0 ? (
           filtered.map((repo, idx) => (
             <a
@@ -89,27 +91,30 @@ export function RepositoriesBlock({ repos }: { repos: any[] }) {
               target="_blank"
               rel="noreferrer"
               key={idx}
-              className="p-3 bg-[#0b0c0d] border border-[#222326] rounded-xl hover:border-[#15803d]/40 transition-colors flex flex-col justify-between min-h-[95px]"
+              style={{ backgroundColor: "#0f1011", border: "1px solid #27272a", borderRadius: "12px", padding: "12px", display: "flex", flexDirection: "column", justifyContent: "space-between", textDecoration: "none", minHeight: "100px" }}
             >
               <div>
-                <div className="flex items-center justify-between gap-2">
-                  <h4 className="text-[11px] font-bold text-zinc-200 truncate max-w-[70%]">{repo.name}</h4>
-                  <span className="text-[9px] bg-[#121315] border border-[#222326] text-zinc-400 px-1.5 py-0.5 rounded font-mono shrink-0">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
+                  {/* High-visibility green links */}
+                  <h4 style={{ fontSize: "12px", fontWeight: "bold", color: "#10b981", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {repo.name}
+                  </h4>
+                  <span style={{ fontSize: "9px", backgroundColor: "#16181a", border: "1px solid #27272a", color: "#a1a1aa", padding: "2px 6px", borderRadius: "4px", fontFamily: "monospace" }}>
                     {repo.language}
                   </span>
                 </div>
-                <p className="text-[10px] text-zinc-500 mt-1 line-clamp-2 leading-tight">
+                <p style={{ fontSize: "11px", color: "#a1a1aa", margin: "6px 0 0 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", lineHeight: "1.4" }}>
                   {repo.description}
                 </p>
               </div>
-              <div className="flex gap-3 mt-2 text-[9px] text-zinc-500 font-mono">
-                <span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-[#15803d]" /> {repo.stars}</span>
-                <span className="flex items-center gap-0.5"><GitFork className="w-3 h-3 text-zinc-700" /> {repo.forks}</span>
+              <div style={{ display: "flex", gap: "12px", marginTop: "8px", fontSize: "10px", color: "#71717a", fontFamily: "monospace" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: "2px" }}><Star style={{ width: "10px", height: "10px", color: "#15803d" }} /> {repo.stars}</span>
+                <span style={{ display: "flex", alignItems: "center", gap: "2px" }}><GitFork style={{ width: "10px", height: "10px", color: "#71717a" }} /> {repo.forks}</span>
               </div>
             </a>
           ))
         ) : (
-          <p className="text-xs text-zinc-600 italic py-8 text-center col-span-2">No matching repositories found.</p>
+          <p style={{ fontSize: "12px", color: "#71717a", fontStyle: "italic", textAlign: "center", gridColumn: "1/-1", padding: "24px 0" }}>No data found.</p>
         )}
       </div>
     </div>
