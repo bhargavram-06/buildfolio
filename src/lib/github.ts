@@ -2,7 +2,6 @@ import axios from "axios";
 
 const GITHUB_API_URL = "https://api.github.com";
 
-// Setup token headers if available to drastically increase API rate limits
 const headers = process.env.GITHUB_ACCESS_TOKEN
   ? { Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}` }
   : {};
@@ -27,12 +26,8 @@ export interface GitHubRepositoryData {
   updatedAt: string;
 }
 
-/**
- * Fetches core profile info, public repositories, and maps out top programming languages.
- */
 export async function fetchGitHubData(username: string) {
   try {
-    // 1. Fetch Basic Profile Data
     const profileResponse = await axios.get(`${GITHUB_API_URL}/users/${username}`, { headers });
     const p = profileResponse.data;
 
@@ -46,7 +41,6 @@ export async function fetchGitHubData(username: string) {
       publicRepos: p.public_repos,
     };
 
-    // 2. Fetch Repositories Data
     const reposResponse = await axios.get(`${GITHUB_API_URL}/users/${username}/repos?per_page=100&sort=updated`, { headers });
     
     const repositories: GitHubRepositoryData[] = reposResponse.data.map((repo: any) => ({
@@ -59,7 +53,6 @@ export async function fetchGitHubData(username: string) {
       updatedAt: repo.updated_at,
     }));
 
-    // 3. Compute Language Distribution Metrics
     const languageCounts: Record<string, number> = {};
     let totalStars = 0;
 
@@ -70,7 +63,6 @@ export async function fetchGitHubData(username: string) {
       }
     });
 
-    // Sort languages to get top-performing choices
     const topLanguages = Object.entries(languageCounts)
       .map(([language, count]) => ({ language, count }))
       .sort((a, b) => b.count - a.count);
@@ -78,7 +70,7 @@ export async function fetchGitHubData(username: string) {
     return {
       success: true,
       profile,
-      repositories: repositories.slice(0, 12), // Keep top 12 most recently updated repos for the MVP layout
+      repositories: repositories.slice(0, 12), 
       statistics: {
         totalStars,
         topLanguages,

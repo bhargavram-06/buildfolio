@@ -16,13 +16,13 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: "#15803d", // Matches your strict Forest Green highlight theme color!
-          colorBackground: "#16181a", // Deep Charcoal card elements for Clerk components
+          colorPrimary: "#15803d", 
+          colorBackground: "#16181a", 
           colorText: "#f4f4f5",
         }
       }}
     >
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className="antialiased bg-[#0f1011] text-[#f4f4f5]">
           {children}
         </body>

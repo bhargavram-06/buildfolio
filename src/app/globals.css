@@ -2,18 +2,14 @@
 
 @layer base {
   :root {
-    /* Premium SaaS Developer Theme: Deep Charcoal & Matte Forest Green */
-    --background: #0f1011;       /* Deep Charcoal canvas */
-    --foreground: #f4f4f5;       /* Crisp off-white text */
-    
-    --card: #16181a;             /* Subtle lighter charcoal for Bento Grid blocks */
+    --background: #0f1011;       
+    --foreground: #f4f4f5;       
+    --card: #16181a;             
     --card-foreground: #f4f4f5;
-    
-    --primary: #15803d;          /* Forest Green Main Highlights */
-    --primary-hover: #166534;    /* Deeper Forest Green for interaction */
-    
-    --muted: #27272a;            /* Neutral borders and dividers */
-    --muted-foreground: #a1a1aa; /* Secondary/Dimmed text */
+    --primary: #15803d;          
+    --primary-hover: #166534;    
+    --muted: #27272a;            
+    --muted-foreground: #a1a1aa; 
   }
 }
 
@@ -30,7 +26,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom scroller to maintain premium feel */
 ::-webkit-scrollbar {
   width: 8px;
 }
