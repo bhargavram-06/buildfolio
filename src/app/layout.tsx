@@ -26,13 +26,13 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
-        // 🎨 CLERK V6 UPGRADED STRUCTURAL VARIABLES MATRIX
+        // 🎨 CLERK V6 FINAL STABLE PROPERTY SPECIFICATIONS
         variables: {
           colorPrimary: "#15803d",
           colorBackground: "#16181a",
-          colorText: "#f4f4f5",
-          colorInputBackground: "#0f1011",
-          colorInputText: "#ffffff",
+          colorForeground: "#f4f4f5", // Replaced colorText
+          colorInput: "#0f1011",           // Replaced colorInputBackground
+          colorInputForeground: "#ffffff", // Replaced colorInputText
         }
       }}
     >
