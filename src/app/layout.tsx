@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Buildfolio | Where Code Becomes Credibility",
-  description: "Automated premium developer portfolio generator designed for Devlynix Buildathon 2.0",
+  title: "Buildfolio Studio",
+  description: "Verified Proof of Work Bento Portfolios",
 };
 
 export default function RootLayout({
@@ -15,15 +26,18 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
+        // 🎨 CLERK V6 UPGRADED STRUCTURAL VARIABLES MATRIX
         variables: {
-          colorPrimary: "#15803d", 
-          colorBackground: "#16181a", 
+          colorPrimary: "#15803d",
+          colorBackground: "#16181a",
           colorText: "#f4f4f5",
+          colorInputBackground: "#0f1011",
+          colorInputText: "#ffffff",
         }
       }}
     >
-      <html lang="en" suppressHydrationWarning>
-        <body className="antialiased bg-[#0f1011] text-[#f4f4f5]">
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           {children}
         </body>
       </html>
