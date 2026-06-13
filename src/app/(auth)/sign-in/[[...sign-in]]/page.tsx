@@ -2,8 +2,9 @@ import { SignIn } from "@clerk/nextjs";
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen bg-[#0f1011] flex items-center justify-center p-4">
-      <SignIn basePath="/sign-in" routing="path" />
+    <div style={{ minHeight: "100vh", backgroundColor: "#0f1011", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* Changed basePath to path to align perfectly with Clerk v6 specifications */}
+      <SignIn path="/sign-in" routing="path" />
     </div>
   );
 }
