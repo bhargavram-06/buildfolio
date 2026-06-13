@@ -31,6 +31,7 @@ export default function Home() {
     accentColor: "#15803d"
   });
 
+  // 🎨 THE EXTENDED 8-WAY THEME LIFECYCLE CONTROLLER
   useEffect(() => {
     if (theme === "Modern Developer") {
       setCanvasStyles({
@@ -47,6 +48,46 @@ export default function Home() {
         cardBg: "#1c1c1c",
         cardBorder: "#3f3f46",
         accentColor: "#a1a1aa"
+      });
+    } else if (theme === "Cyberpunk Matrix") {
+      setCanvasStyles({
+        background: "#050505",
+        textColor: "#39ff14",
+        cardBg: "#0d0d0d",
+        cardBorder: "#39ff14",
+        accentColor: "#ff007f"
+      });
+    } else if (theme === "Dracula Eclipse") {
+      setCanvasStyles({
+        background: "#1e1e2e",
+        textColor: "#f8f8f2",
+        cardBg: "#282a36",
+        cardBorder: "#bd93f9",
+        accentColor: "#ff79c6"
+      });
+    } else if (theme === "Sunset Overdrive") {
+      setCanvasStyles({
+        background: "#21142d",
+        textColor: "#fca5a5",
+        cardBg: "#2d1b3e",
+        cardBorder: "#f97316",
+        accentColor: "#fbbf24"
+      });
+    } else if (theme === "Nordic Frost") {
+      setCanvasStyles({
+        background: "#0f172a",
+        textColor: "#f8fafc",
+        cardBg: "#1e293b",
+        cardBorder: "#38bdf8",
+        accentColor: "#2dd4bf"
+      });
+    } else if (theme === "Monochrome Luxury") {
+      setCanvasStyles({
+        background: "#000000",
+        textColor: "#ffffff",
+        cardBg: "#111111",
+        cardBorder: "#2e2e2e",
+        accentColor: "#d4af37"
       });
     } else {
       setCanvasStyles({
@@ -130,31 +171,33 @@ export default function Home() {
           </div>
         )}
 
-        {/* Theme Modifiers Deck */}
+        {/* 🎨 THE 8-BUTTON CONTRAST COMPLIANT WORKBENCH DECK */}
         {profile && !isLoading && (
-          <div style={{ width: "100%", backgroundColor: "#121315", border: "1px solid #222326", borderRadius: "12px", padding: "12px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: "bold", color: "#ffffff", textTransform: "uppercase" }}>
-                <Palette style={{ width: "14px", height: "14px", color: "#15803d" }} />
-                <span>Theme Matrix Mixer:</span>
-              </div>
-              <div style={{ display: "flex", gap: "8px" }}>
-                {(["Silent Coder", "Modern Developer", "Minimal Professional"] as const).map((t) => (
+          <div style={{ width: "100%", backgroundColor: "#121315", border: "1px solid #222326", borderRadius: "12px", padding: "14px", display: "flex", flexDirection: "column", gap: "12px", shadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+            <div style={{ display: "flex", itemsCenter: "center", gap: "6px", fontSize: "11px", fontWeight: "bold", color: "#ffffff", textTransform: "uppercase" }}>
+              <Palette style={{ width: "14px", height: "14px", color: "#15803d" }} />
+              <span>Themes (8 Options available):</span>
+            </div>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+              {/* Responsive wrap row containing all 8 selections with high contrast text colors */}
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", flex: "1" }}>
+                {(["Silent Coder", "Modern Developer", "Minimal Professional", "Cyberpunk Matrix", "Dracula Eclipse", "Sunset Overdrive", "Nordic Frost", "Monochrome Luxury"] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTheme(t)}
-                    style={{ backgroundColor: theme === t ? "#15803d" : "#1e2022", color: "#ffffff", border: theme === t ? "1px solid #15803d" : "1px solid #3a3f47", fontSize: "11px", fontWeight: "bold", padding: "6px 12px", borderRadius: "6px", cursor: "pointer" }}
+                    style={{ backgroundColor: theme === t ? "#15803d" : "#1e2022", color: "#ffffff", border: theme === t ? "1px solid #15803d" : "1px solid #3a3f47", fontSize: "11px", fontWeight: "bold", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", transition: "all 0.2s" }}
                   >
                     {t}
                   </button>
                 ))}
               </div>
-            </div>
 
-            <button onClick={handlePublish} disabled={saveStatus === "saving"} style={{ backgroundColor: "#15803d", color: "#ffffff", border: "none", fontSize: "11px", fontWeight: "bold", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
-              <CloudUpload style={{ width: "14px", height: "14px" }} />
-              {saveStatus === "saving" ? "Saving..." : "Publish Portfolio Setup"}
-            </button>
+              <button onClick={handlePublish} disabled={saveStatus === "saving"} style={{ backgroundColor: "#15803d", color: "#ffffff", border: "none", fontSize: "11px", fontWeight: "bold", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                <CloudUpload style={{ width: "14px", height: "14px" }} />
+                {saveStatus === "saving" ? "Saving..." : "Publish Portfolio Setup"}
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -184,7 +227,7 @@ export default function Home() {
             </p>
 
             {/* LIVE DYNAMIC SYSTEM WRAPPER CONTAINER BLOCK */}
-            <div style={{ backgroundColor: canvasStyles.background, color: canvasStyles.textColor, border: "1px solid #222326", borderRadius: "16px", padding: "24px", display: "flex", flexDirection: "column", gap: "20px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.5)" }}>
+            <div style={{ backgroundColor: canvasStyles.background, color: canvasStyles.textColor, border: `1px solid ${canvasStyles.cardBorder}`, borderRadius: "16px", padding: "24px", display: "flex", flexDirection: "column", gap: "20px", boxShadow: "0 20px 25px -5px rgba(0,0,0,0.5)", transition: "all 0.3s ease" }}>
               
               {/* Internal Info bar */}
               <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "10px", fontSize: "10px", fontFamily: "monospace", fontWeight: "bold", color: "#71717a" }}>
@@ -225,6 +268,18 @@ export default function Home() {
                   <div style={{ backgroundColor: canvasStyles.cardBg, border: `1px solid ${canvasStyles.cardBorder}`, borderRadius: "12px", padding: "16px" }}>
                     <p style={{ fontSize: "10px", color: "#71717a", fontWeight: "bold", textTransform: "uppercase", margin: "0 0 12px 0" }}>Syntax Telemetry</p>
                     <LanguagesBlock languages={statistics.topLanguages} />
+                  </div>
+
+                  {/* AUTOMATIC CODEBASE SUMMARY SYSTEM INSIGHT CARD */}
+                  <div style={{ backgroundColor: canvasStyles.cardBg, border: `1px solid ${canvasStyles.cardBorder}`, borderRadius: "12px", padding: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <p style={{ fontSize: "10px", color: "#71717a", fontWeight: "bold", textTransform: "uppercase", margin: 0 }}>System Insight</p>
+                    <p style={{ fontSize: "11px", color: "#ffffff", lineHeight: "1.5", margin: 0 }}>
+                      {statistics.topLanguages[0]?.language === "Jupyter Notebook" || statistics.topLanguages[0]?.language === "Python" ? (
+                        <span>🎯 This developer profile demonstrates a heavy focus on <strong>Artificial Intelligence data models</strong>, automation scripts, and analytical research tracking frameworks.</span>
+                      ) : (
+                        <span>💻 This developer profile demonstrates a strong engineering capability in building high-performance <strong>Full-Stack Web Architectures</strong> and responsive user interfaces.</span>
+                      )}
+                    </p>
                   </div>
 
                 </div>
