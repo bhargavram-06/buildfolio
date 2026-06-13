@@ -5,7 +5,12 @@ if (!process.env.MONGODB_URI) {
 }
 
 const uri = process.env.MONGODB_URI;
-const options = {};
+
+// 🛡️ ACCESSIBILITY AUDIT: Enforce strict 10-second server connection timeouts
+const options = {
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 10000,
+};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
@@ -28,6 +33,10 @@ if (process.env.NODE_ENV === "development") {
 export default clientPromise;
 
 export async function connectToDatabase(dbName = "buildfolio") {
-  const mongoClient = await clientPromise;
-  return mongoClient.db(dbName);
+  try {
+    const mongoClient = await clientPromise;
+    return mongoClient.db(dbName);
+  } catch (error) {
+    throw new Error("Database link failed to establish within safe runtime boundaries.");
+  }
 }

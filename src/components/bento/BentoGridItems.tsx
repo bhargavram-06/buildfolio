@@ -1,49 +1,56 @@
-"use client"; // ADD THIS DIRECTIVE TO RESOLVE THE PARSING ERROR 🚀
+"use client";
+
 import { useState } from "react";
 import { FolderGit2, Star, GitFork, Users, Search } from "lucide-react";
 
-// 1. Stats Counters Grid block
+// 📊 SECTION 1: COUNTERS (Total Projects, Stars, Followers)
 export function StatsBlock({ totalRepos, stars, followers }: any) {
-  const statItems = [
-    { label: "Total Projects", value: totalRepos, icon: FolderGit2 },
-    { label: "Stars Earned", value: stars, icon: Star },
-    { label: "Followers", value: followers, icon: Users },
-  ];
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-      {statItems.map((item, idx) => (
-        <div key={idx} className="bg-[#16181a] border border-[#27272a] rounded-lg p-4 flex items-center justify-between">
-          <div>
-            <p className="text-xs text-[#a1a1aa] font-medium">{item.label}</p>
-            <p className="text-2xl font-bold text-[#f4f4f5] mt-1">{item.value}</p>
-          </div>
-          <item.icon className="w-5 h-5 text-[#15803d]" />
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+      <div className="bg-[#121315] border border-[#222326] rounded-xl p-3 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Total Projects</p>
+          <p className="text-lg font-black text-white mt-0.5">{totalRepos || 0}</p>
         </div>
-      ))}
+        <FolderGit2 className="w-4 h-4 text-[#15803d]" />
+      </div>
+      <div className="bg-[#121315] border border-[#222326] rounded-xl p-3 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Stars Earned</p>
+          <p className="text-lg font-black text-white mt-0.5">{stars || 0}</p>
+        </div>
+        <Star className="w-4 h-4 text-[#15803d]" />
+      </div>
+      <div className="bg-[#121315] border border-[#222326] rounded-xl p-3 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Followers</p>
+          <p className="text-lg font-black text-white mt-0.5">{followers || 0}</p>
+        </div>
+        <Users className="w-4 h-4 text-[#15803d]" />
+      </div>
     </div>
   );
 }
 
-// 2. Top Languages List block
+// 📈 SECTION 2: SYNTAX METRICS (Language Progress Bars)
 export function LanguagesBlock({ languages }: { languages: any[] }) {
-  const totalCount = languages.reduce((acc, curr) => acc + curr.count, 0);
+  if (!languages || languages.length === 0) {
+    return <p className="text-xs text-zinc-600 italic p-1">No syntax recorded.</p>;
+  }
+  const total = languages.reduce((acc, curr) => acc + curr.count, 0);
 
   return (
-    <div className="space-y-3 w-full">
+    <div className="space-y-3 w-full pt-1">
       {languages.slice(0, 4).map((lang, idx) => {
-        const percentage = totalCount > 0 ? (lang.count / totalCount) * 100 : 0;
+        const percentage = total > 0 ? (lang.count / total) * 100 : 0;
         return (
           <div key={idx} className="space-y-1">
-            <div className="flex justify-between text-xs font-medium">
-              <span className="text-[#f4f4f5]">{lang.language}</span>
-              <span className="text-[#a1a1aa]">{Math.round(percentage)}%</span>
+            <div className="flex justify-between text-xs">
+              <span className="text-zinc-300 font-semibold text-[11px]">{lang.language}</span>
+              <span className="text-zinc-500 font-mono text-[11px]">{Math.round(percentage)}%</span>
             </div>
-            <div className="w-full bg-[#0f1011] rounded-full h-1.5">
-              <div
-                className="bg-[#15803d] h-1.5 rounded-full transition-all duration-500"
-                style={{ width: `${percentage}%` }}
-              />
+            <div className="w-full bg-[#0b0c0d] rounded-full h-1.5 border border-[#222326]">
+              <div className="bg-[#15803d] h-1.5 rounded-full" style={{ width: `${percentage}%` }} />
             </div>
           </div>
         );
@@ -52,67 +59,57 @@ export function LanguagesBlock({ languages }: { languages: any[] }) {
   );
 }
 
-// 3. Upgraded Project Repositories Stream Block with Filters
+// 📂 SECTION 3: ECOSYSTEM REPOSITORIES (Clean Filtered Cards)
 export function RepositoriesBlock({ repos }: { repos: any[] }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [query, setQuery] = useState("");
 
-  const filteredRepos = repos.filter((repo) =>
-    repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (repo.language && repo.language.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filtered = (repos || []).filter((r) =>
+    r.name.toLowerCase().includes(query.toLowerCase()) ||
+    (r.language && r.language.toLowerCase().includes(query.toLowerCase()))
   );
 
   return (
-    <div className="space-y-4 w-full">
-      {/* Client-side Advanced Filtering Input Bar */}
-      <div className="flex items-center gap-2 bg-[#0f1011] border border-[#27272a] rounded-lg px-3 py-2 focus-within:border-[#15803d] transition-all">
-        <Search className="w-3.5 h-3.5 text-zinc-500" />
+    <div className="space-y-3 w-full">
+      <div className="flex items-center gap-2 bg-[#0b0c0d] border border-[#222326] rounded-lg px-2.5 py-1.5 focus-within:border-[#15803d]/60 transition-all">
+        <Search className="w-3.5 h-3.5 text-zinc-600 shrink-0" />
         <input
           type="text"
-          placeholder="Filter repositories by title or ecosystem..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-transparent text-xs text-white focus:outline-none w-full placeholder:text-zinc-600 font-medium"
+          placeholder="Filter repositories..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="bg-transparent text-xs text-white focus:outline-none w-full placeholder:text-zinc-700 font-medium"
         />
       </div>
 
-      {/* Scannable Grid Feed Display Area */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[260px] overflow-y-auto pr-1">
-        {filteredRepos.length > 0 ? (
-          filteredRepos.map((repo, idx) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 h-[210px] overflow-y-auto custom-scrollbar pr-0.5">
+        {filtered.length > 0 ? (
+          filtered.map((repo, idx) => (
             <a
               href={repo.htmlUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noreferrer"
               key={idx}
-              className="p-4 bg-[#0f1011] border border-[#27272a] rounded-lg hover:border-[#15803d] transition-colors group/item flex flex-col justify-between"
+              className="p-3 bg-[#0b0c0d] border border-[#222326] rounded-xl hover:border-[#15803d]/40 transition-colors flex flex-col justify-between min-h-[95px]"
             >
               <div>
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-[#f4f4f5] group-hover/item:text-[#15803d] transition-colors truncate max-w-[70%]">
-                    {repo.name}
-                  </h4>
-                  <span className="text-[10px] bg-[#16181a] border border-[#27272a] text-[#a1a1aa] px-2 py-0.5 rounded-full font-mono">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="text-[11px] font-bold text-zinc-200 truncate max-w-[70%]">{repo.name}</h4>
+                  <span className="text-[9px] bg-[#121315] border border-[#222326] text-zinc-400 px-1.5 py-0.5 rounded font-mono shrink-0">
                     {repo.language}
                   </span>
                 </div>
-                <p className="text-xs text-[#a1a1aa] mt-1 line-clamp-2">
+                <p className="text-[10px] text-zinc-500 mt-1 line-clamp-2 leading-tight">
                   {repo.description}
                 </p>
               </div>
-              <div className="flex gap-4 mt-3 text-[11px] text-[#a1a1aa]">
-                <span className="flex items-center gap-1">
-                  <Star className="w-3 h-3 text-[#15803d]" /> {repo.stars}
-                </span>
-                <span className="flex items-center gap-1">
-                  <GitFork className="w-3 h-3 text-zinc-500" /> {repo.forks}
-                </span>
+              <div className="flex gap-3 mt-2 text-[9px] text-zinc-500 font-mono">
+                <span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-[#15803d]" /> {repo.stars}</span>
+                <span className="flex items-center gap-0.5"><GitFork className="w-3 h-3 text-zinc-700" /> {repo.forks}</span>
               </div>
             </a>
           ))
         ) : (
-          <p className="text-xs text-zinc-500 italic text-center col-span-2 py-12">
-            No matching source engines detected.
-          </p>
+          <p className="text-xs text-zinc-600 italic py-8 text-center col-span-2">No matching repositories found.</p>
         )}
       </div>
     </div>

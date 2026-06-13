@@ -9,6 +9,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: false, error: "Username query parameter is mandatory." }, { status: 400 });
   }
 
+  // 🛡️ SECURITY AUDIT: Restrict username format to valid alphanumeric/hyphen characters only
+  const isValidUsername = /^[a-zA-Z0-9_-]+$/.test(username);
+  if (!isValidUsername) {
+    return NextResponse.json({ success: false, error: "Security Exception: Malicious or invalid username formatting detected." }, { status: 400 });
+  }
+
   const result = await fetchGitHubData(username);
 
   if (!result.success) {

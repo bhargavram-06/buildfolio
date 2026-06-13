@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
-import { BentoCard } from "@/components/bento/BentoCard";
 import { StatsBlock, LanguagesBlock, RepositoriesBlock } from "@/components/bento/BentoGridItems";
-import { Search, LayoutGrid, Palette, CloudUpload, Sparkles, CheckCircle, FolderGit2 } from "lucide-react";
+import { Search, Palette, CloudUpload, FolderGit2, CheckCircle, ExternalLink, ShieldCheck, Globe } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   const [inputUsername, setInputUsername] = useState("");
@@ -23,10 +23,44 @@ export default function Home() {
     savePortfolio 
   } = usePortfolioStore();
 
+  // 🎨 MULTI-THEME LIVE CANVAS MATRIX ROUTER
+  const [canvasStyles, setCanvasStyles] = useState({
+    background: "bg-[#111214] text-[#f4f4f5]",
+    cardStyle: "bg-[#16181a] border-[#222326]",
+    accentText: "text-[#15803d]",
+    fontFamily: "font-sans"
+  });
+
+  // Watch the theme state and switch live canvas styles instantly on button clicks
+  useEffect(() => {
+    if (theme === "Modern Developer") {
+      setCanvasStyles({
+        background: "bg-[#090d16] text-[#e2e8f0]",
+        cardStyle: "bg-[#111827] border-emerald-500/20 shadow-md",
+        accentText: "text-emerald-400 font-bold",
+        fontFamily: "font-mono"
+      });
+    } else if (theme === "Minimal Professional") {
+      setCanvasStyles({
+        background: "bg-[#121212] text-[#fafafa]",
+        cardStyle: "bg-[#1c1c1c] border-zinc-800",
+        accentText: "text-zinc-400 border-b border-zinc-700 pb-0.5",
+        fontFamily: "font-serif"
+      });
+    } else {
+      setCanvasStyles({
+        background: "bg-[#111214] text-[#f4f4f5]",
+        cardStyle: "bg-[#16181a] border-[#222326]",
+        accentText: "text-[#15803d]",
+        fontFamily: "font-sans"
+      });
+    }
+  }, [theme]);
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputUsername.trim()) return;
-    setGeneratedLink(null); // Clear previous links on new search
+    setGeneratedLink(null);
     await fetchProfileData(inputUsername.trim());
   };
 
@@ -35,7 +69,6 @@ export default function Home() {
     const success = await savePortfolio();
     if (success && profile) {
       setSaveStatus("success");
-      // Auto-detects if running on localhost or a live Vercel production domain
       setGeneratedLink(`${window.location.origin}/${profile.username.toLowerCase()}`);
     } else {
       setSaveStatus("error");
@@ -44,114 +77,98 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0f1011] text-[#f4f4f5] px-4 py-12 md:px-8">
-      {/* 1. Elite Header Banner */}
-      <header className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between border-b border-[#27272a] pb-8 mb-12 gap-6">
-        <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 text-[11px] font-medium rounded-full bg-[#16181a] border border-[#27272a] text-[#15803d] mb-3">
-            <Sparkles className="w-3 h-3" /> Devlynix Buildathon 2.0 MVP Sprint
+    <main className="min-h-screen bg-[#0b0c0d] text-[#f4f4f5] antialiased font-sans flex flex-col">
+      
+      {/* 🧭 NAVIGATION BUILDER DECK CONTROL BAR */}
+      <nav className="w-full bg-[#111214] border-b border-[#222326] px-4 py-3 md:px-8 sticky top-0 z-50 shadow-md">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[#15803d]" />
+            <span className="text-xs font-black uppercase tracking-widest text-zinc-300">
+              Buildfolio <span className="text-[#15803d]">Studio</span>
+            </span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
-            Buildfolio<span className="text-[#15803d]">.</span>
-          </h1>
-          <p className="text-sm text-[#a1a1aa] mt-1">Where Code Becomes Credibility</p>
-        </div>
 
-        {/* Real-time GitHub Username Search Input */}
-        <form onSubmit={handleSearch} className="flex w-full md:w-auto items-center gap-2 bg-[#16181a] border border-[#27272a] rounded-lg p-1.5 focus-within:border-[#15803d] transition-all">
-          <div className="flex items-center gap-2 px-2 text-[#a1a1aa]">
-            <FolderGit2 className="w-4 h-4 text-[#15803d]" />
-          </div>
-          <input
-            type="text"
-            placeholder="Enter GitHub Username..."
-            value={inputUsername}
-            onChange={(e) => setInputUsername(e.target.value)}
-            disabled={isLoading}
-            className="bg-transparent text-sm font-medium focus:outline-none w-full md:w-64 text-[#f4f4f5] placeholder:text-[#a1a1aa]"
-          />
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="bg-[#15803d] hover:bg-[#166534] text-white font-medium text-xs px-4 py-2 rounded-md transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-          >
-            <Search className="w-3.5 h-3.5" />
-            {isLoading ? "Syncing..." : "Generate"}
-          </button>
-        </form>
-      </header>
-
-      {/* 2. Advanced Link Export Clipboard Notification Component */}
-      {generatedLink && (
-        <div className="max-w-6xl mx-auto bg-[#16181a] border border-[#15803d]/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 shadow-xl animate-fadeIn">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#15803d]/10 flex items-center justify-center text-[#15803d]">
-              <CheckCircle className="w-4 h-4" />
+          <form onSubmit={handleSearch} className="flex w-full sm:w-auto items-center gap-2 bg-[#16181a] border border-[#27272a] rounded-xl p-1 focus-within:border-[#15803d] transition-all">
+            <div className="pl-2.5">
+              <FolderGit2 className="w-3.5 h-3.5 text-[#15803d]" />
             </div>
-            <div>
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Cloud Synchronization Successful</p>
-              <p className="text-xs text-[#a1a1aa] font-mono mt-0.5 break-all">{generatedLink}</p>
-            </div>
-          </div>
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(generatedLink);
-              alert("Portfolio link copied to clipboard!");
-            }}
-            className="w-full sm:w-auto bg-[#15803d] hover:bg-[#166534] text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors cursor-pointer text-center"
-          >
-            Copy Public URL
-          </button>
+            <input
+              type="text"
+              placeholder="Compile public GitHub username..."
+              value={inputUsername}
+              onChange={(e) => setInputUsername(e.target.value)}
+              disabled={isLoading}
+              className="bg-transparent text-xs font-medium focus:outline-none w-full sm:w-52 text-[#f4f4f5] placeholder:text-zinc-600 py-1"
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="bg-[#15803d] hover:bg-[#166534] text-white font-bold text-xs px-4 py-1.5 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+            >
+              {isLoading ? "Sync..." : "Generate"}
+            </button>
+          </form>
         </div>
-      )}
+      </nav>
 
-      {/* 3. Error Display Message */}
-      {error && (
-        <div className="max-w-6xl mx-auto bg-red-950/20 border border-red-900 text-red-400 p-4 rounded-lg text-sm text-center mb-8">
-          ⚠️ {error}
-        </div>
-      )}
-
-      {/* 4. Empty State / Entry Landing View */}
-      {!profile && !isLoading && (
-        <section className="max-w-xl mx-auto text-center py-20 space-y-6">
-          <div className="w-16 h-16 bg-[#16181a] border border-[#27272a] rounded-2xl flex items-center justify-center mx-auto shadow-xl">
-            <LayoutGrid className="w-6 h-6 text-[#15803d]" />
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight">No Active Portfolio Compiled</h2>
-            <p className="text-sm text-[#a1a1aa] max-w-sm mx-auto">
-              Input your public GitHub username in the field above to instantly convert your live repositories into a polished Bento Grid showcase.
-            </p>
-          </div>
-        </section>
-      )}
-
-      {/* 5. Loader Visual Animation state */}
-      {isLoading && (
-        <div className="max-w-6xl mx-auto text-center py-32 space-y-4">
-          <div className="w-8 h-8 border-4 border-[#15803d] border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-sm text-[#a1a1aa] font-medium">Extracting developer telemetry records from the GitHub engine...</p>
-        </div>
-      )}
-
-      {/* 6. Hydrated Real-Data Bento Grid Workspace Dashboard */}
-      {profile && !isLoading && statistics && (
-        <div className="max-w-6xl mx-auto space-y-8 animate-fadeIn">
-          
-          {/* Dashboard Control Custom Actions Bar */}
-          <div className="bg-[#16181a] border border-[#27272a] rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+      {/* 💼 WORKSPACE CONTROL ROOM */}
+      <div className="max-w-5xl mx-auto w-full px-4 pt-6 space-y-4">
+        
+        {/* URL Sync Export Banner Box */}
+        {generatedLink && (
+          <div className="w-full bg-[#111612] border border-[#15803d]/30 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 animate-fadeIn shadow-lg">
             <div className="flex items-center gap-3">
-              <Palette className="w-4 h-4 text-[#15803d]" />
-              <div className="flex gap-2">
+              <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+              <div>
+                <p className="text-xs font-bold text-white uppercase tracking-wider">Portfolio Live & Saved</p>
+                <p className="text-xs text-zinc-400 font-mono mt-0.5 break-all">{generatedLink}</p>
+              </div>
+            </div>
+            <div className="flex gap-2 w-full sm:w-auto shrink-0">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(generatedLink);
+                  alert("Link copied!");
+                }}
+                className="bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold px-3 py-1.5 rounded-md cursor-pointer"
+              >
+                Copy Link
+              </button>
+              <Link
+                href={`/${profile?.username.toLowerCase()}`}
+                target="_blank"
+                className="bg-[#15803d] hover:bg-[#166534] text-white text-xs font-bold px-3 py-1.5 rounded-md flex items-center gap-1"
+              >
+                View Page <ExternalLink className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="w-full bg-red-950/20 border border-red-900/40 text-red-400 p-3 rounded-xl text-xs text-center font-semibold">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {/* Theme Modifiers Deck - HIGH CONTRAST TEXT & VISIBILITY */}
+        {profile && !isLoading && (
+          <div className="w-full bg-[#121315] border border-[#222326] rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto py-0.5">
+              <div className="flex items-center gap-1 text-zinc-300 text-xs font-bold uppercase tracking-wider shrink-0">
+                <Palette className="w-3.5 h-3.5 text-[#15803d]" />
+                <span>Theme Mixer:</span>
+              </div>
+              <div className="flex gap-1.5 shrink-0">
                 {(["Silent Coder", "Modern Developer", "Minimal Professional"] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTheme(t)}
-                    className={`text-xs px-3 py-1.5 font-medium rounded-md transition-all cursor-pointer border ${
+                    className={`text-xs px-2.5 py-1.5 font-bold rounded-lg border transition-all cursor-pointer ${
                       theme === t
-                        ? "bg-[#15803d] text-white border-[#15803d]"
-                        : "bg-[#0f1011] text-[#a1a1aa] border-[#27272a] hover:border-[#15803d]/40"
+                        ? "bg-[#15803d] text-white border-[#15803d] shadow"
+                        : "bg-[#1c1e22] text-zinc-100 border-[#2d3139] hover:border-zinc-500"
                     }`}
                   >
                     {t}
@@ -163,74 +180,119 @@ export default function Home() {
             <button
               onClick={handlePublish}
               disabled={saveStatus === "saving"}
-              className="w-full sm:w-auto bg-[#16181a] border border-[#27272a] hover:border-[#15803d] text-[#f4f4f5] text-xs font-semibold px-5 py-2.5 rounded-lg transition-all flex items-center justify-center gap-2 shadow cursor-pointer disabled:opacity-50"
+              className="w-full sm:w-auto bg-[#15803d] hover:bg-[#166534] text-white text-xs font-bold uppercase tracking-wide px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shadow"
             >
-              {saveStatus === "saving" && <div className="w-3 h-3 border-2 border-[#15803d] border-t-transparent rounded-full animate-spin" />}
-              {saveStatus === "idle" && <CloudUpload className="w-4 h-4 text-[#15803d]" />}
-              {saveStatus === "success" && <CheckCircle className="w-4 h-4 text-emerald-400" />}
-              {saveStatus === "saving" ? "Syncing Atlas..." : saveStatus === "success" ? "Saved to Database!" : "Publish Portfolio"}
+              <CloudUpload className="w-3.5 h-3.5" />
+              {saveStatus === "saving" ? "Publishing..." : "Publish Portfolio"}
             </button>
           </div>
+        )}
+      </div>
 
-          {/* Master Bento Grid Configuration Matrix */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* 🖼️ REAL-TIME PREVIEW WORKSPACE DECK */}
+      <div className="max-w-5xl mx-auto w-full px-4 pb-20 flex-1 flex flex-col mt-4">
+        
+        {!profile && !isLoading && (
+          <div className="text-center py-28 space-y-2 max-w-sm mx-auto flex-1 flex flex-col justify-center">
+            <FolderGit2 className="w-8 h-8 text-zinc-700 mx-auto" />
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Workspace Empty</h3>
+            <p className="text-xs text-zinc-500">Enter your GitHub profile username in the nav deck controller above.</p>
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="text-center py-32 space-y-2 flex-1 flex flex-col justify-center">
+            <div className="w-5 h-5 border-2 border-[#15803d] border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-xs text-zinc-600 font-mono tracking-widest">COMPILING VERSION SCHEMAS FROM ATOM RECOS...</p>
+          </div>
+        )}
+
+        {/* THE REAL PORTFOLIO SETUP LIVE CANVAS GRID */}
+        {profile && !isLoading && statistics && (
+          <div className="space-y-4 w-full animate-fadeIn">
             
-            {/* Column Left: Identity & Language telemetry */}
-            <div className="lg:col-span-1 space-y-6 flex flex-col">
-              {/* Profile Card Block */}
-              <BentoCard className="flex-1" title="Identity Framework" description={`Theme: ${theme}`}>
-                <div className="mt-2 space-y-4">
-                  <div className="flex items-center gap-4">
-                    <img 
-                      src={profile.avatarUrl} 
-                      alt={profile.name} 
-                      className="w-16 h-16 rounded-xl border border-[#27272a] bg-[#0f1011]"
-                    />
-                    <div>
-                      <h3 className="text-lg font-bold text-[#f4f4f5] tracking-tight">{profile.name}</h3>
-                      <p className="text-xs text-[#15803d] font-mono">@{profile.username}</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-[#a1a1aa] leading-relaxed bg-[#0f1011] p-3 rounded-lg border border-[#27272a]">
-                    {profile.bio}
-                  </p>
-                </div>
-              </BentoCard>
-
-              {/* Language Distribution Block */}
-              <BentoCard title="Telemetry Summary" description="Distribution of top languages across active builds">
-                <div className="mt-2">
-                  {statistics.topLanguages.length > 0 ? (
-                    <LanguagesBlock languages={statistics.topLanguages} />
-                  ) : (
-                    <p className="text-xs text-[#a1a1aa] italic">No syntax definitions detected.</p>
-                  )}
-                </div>
-              </BentoCard>
+            <div className="border-l-2 border-[#15803d] pl-2.5 py-0.5">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">Live Canvas Screen View</h2>
             </div>
 
-            {/* Column Right: Wide Metrics Data Blocks */}
-            <div className="lg:col-span-2 space-y-6 flex flex-col">
-              {/* Top Overview Counters Block */}
-              <div className="w-full">
-                <StatsBlock 
-                  totalRepos={statistics.totalProjects} 
-                  stars={statistics.totalStars} 
-                  followers={profile.followers} 
-                />
+            {/* LIVE REACTIVE CONTAINER BASE */}
+            <div className={`w-full rounded-xl p-5 border border-[#222326] transition-all duration-300 shadow-xl ${canvasStyles.background} ${canvasStyles.fontFamily} space-y-5`}>
+              
+              {/* Top Layout Heading Header */}
+              <div className="flex items-center justify-between border-b border-zinc-800/50 pb-2.5 text-[10px] font-mono tracking-wider font-bold text-zinc-500">
+                <div className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#15803d]" />
+                  <span>BUILDFOLIO // VERIFIED_PROOF_OF_WORK</span>
+                </div>
+                <span className="bg-zinc-900 border border-zinc-800 text-[#15803d] px-1.5 py-0.5 rounded text-[9px]">
+                  {theme}
+                </span>
               </div>
 
-              {/* Verified Code Repositories Output Feed */}
-              <BentoCard className="flex-1" title="Verified Repositories Ecosystem" description="Real proof-of-work modules pulled from active version streams">
-                <div className="mt-2 text-zinc-400">
-                  <RepositoriesBlock repos={repositories} />
+              {/* 📐 TWO-COLUMN MAIN ALIGNMENT GRID CONTAINER */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+                
+                {/* 1. LEFT SIDEBAR COLUMN */}
+                <div className="lg:col-span-1 flex flex-col gap-5 w-full">
+                  
+                  {/* DEVELOPER CONTEXT: Cleaned and shrunk down significantly */}
+                  <div className={`rounded-xl p-4 border transition-all ${canvasStyles.cardStyle} space-y-3`}>
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-zinc-500">Developer Context</p>
+                    <div className="flex items-center gap-2.5 border-b border-zinc-800/40 pb-2">
+                      {/* Fixed Small Shrunk Icon Badge */}
+                      <img 
+                        src={profile.avatarUrl} 
+                        alt={profile.name} 
+                        className="w-10 h-10 rounded-lg border border-zinc-800 bg-[#0c0d0e] object-cover shrink-0" 
+                      />
+                      <div className="truncate">
+                        <h3 className="text-xs font-black tracking-tight text-white truncate leading-tight">{profile.name}</h3>
+                        <p className={`text-[10px] font-mono mt-0.5 ${canvasStyles.accentText}`}>@{profile.username}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-zinc-400 leading-relaxed">
+                      {profile.bio}
+                    </p>
+                  </div>
+
+                  {/* SYNTAX TELEMETRY CARD */}
+                  <div className={`rounded-xl p-4 border transition-all ${canvasStyles.cardStyle}`}>
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-zinc-500 mb-2">Syntax Telemetry</p>
+                    <LanguagesBlock languages={statistics.topLanguages} />
+                  </div>
+
                 </div>
-              </BentoCard>
+
+                {/* 2. RIGHT MAIN CONTENT COLUMN */}
+                <div className="lg:col-span-2 flex flex-col gap-5 w-full">
+                  
+                  {/* STATS PERFORMANCE RECORDROW */}
+                  <StatsBlock 
+                    totalRepos={statistics.totalProjects} 
+                    stars={statistics.totalStars} 
+                    followers={profile.followers} 
+                  />
+
+                  {/* PUBLIC OPEN SOURCE ECOSYSTEM GRID CARD */}
+                  <div className={`rounded-xl p-4 border transition-all ${canvasStyles.cardStyle}`}>
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-zinc-500 mb-2">Ecosystem Public Repositories</p>
+                    <RepositoriesBlock repos={repositories} />
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Endorsement Footer bar */}
+              <div className="text-center pt-3 border-t border-zinc-800/50 text-[9px] text-zinc-600 flex items-center justify-center gap-1 font-mono tracking-widest">
+                <Globe className="w-3 h-3 text-[#15803d]" /> Powered by Buildfolio Engine Pipeline
+              </div>
+
             </div>
 
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </main>
   );
 }
