@@ -7,27 +7,34 @@ import { FolderGit2, Star, GitFork, Users, Search } from "lucide-react";
 export function StatsBlock({ totalRepos, stars, followers }: any) {
   return (
     <div style={{ display: "flex", gap: "16px", width: "100%", flexWrap: "wrap", marginBottom: "16px" }}>
-      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyBetween: "space-between", alignItems: "center" }}>
+      
+      {/* 📂 TOTAL PROJECTS CARD */}
+      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <p style={{ fontSize: "10px", color: "#a1a1aa", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Total Projects</p>
           <p style={{ fontSize: "20px", fontWeight: "900", color: "#ffffff", margin: "4px 0 0 0" }}>{totalRepos || 0}</p>
         </div>
         <FolderGit2 style={{ width: "20px", height: "20px", color: "#15803d" }} />
       </div>
-      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyBetween: "space-between", alignItems: "center" }}>
+
+      {/* ⭐ STARS EARNED CARD */}
+      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <p style={{ fontSize: "10px", color: "#a1a1aa", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Stars Earned</p>
           <p style={{ fontSize: "20px", fontWeight: "900", color: "#ffffff", margin: "4px 0 0 0" }}>{stars || 0}</p>
         </div>
         <Star style={{ width: "20px", height: "20px", color: "#15803d" }} />
       </div>
-      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyBetween: "space-between", alignItems: "center" }}>
+
+      {/* 👥 FOLLOWERS CARD */}
+      <div style={{ flex: "1", minWidth: "150px", backgroundColor: "#16181a", border: "1px solid #27272a", borderRadius: "12px", padding: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <p style={{ fontSize: "10px", color: "#a1a1aa", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Followers</p>
           <p style={{ fontSize: "20px", fontWeight: "900", color: "#ffffff", margin: "4px 0 0 0" }}>{followers || 0}</p>
         </div>
         <Users style={{ width: "20px", height: "20px", color: "#15803d" }} />
       </div>
+
     </div>
   );
 }

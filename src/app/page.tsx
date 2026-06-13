@@ -173,8 +173,8 @@ export default function Home() {
 
         {/* 🎨 THE 8-BUTTON CONTRAST COMPLIANT WORKBENCH DECK */}
         {profile && !isLoading && (
-          <div style={{ width: "100%", backgroundColor: "#121315", border: "1px solid #222326", borderRadius: "12px", padding: "14px", display: "flex", flexDirection: "column", gap: "12px", shadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
-            <div style={{ display: "flex", itemsCenter: "center", gap: "6px", fontSize: "11px", fontWeight: "bold", color: "#ffffff", textTransform: "uppercase" }}>
+          <div style={{ width: "100%", backgroundColor: "#121315", border: "1px solid #222326", borderRadius: "12px", padding: "14px", display: "flex", flexDirection: "column", gap: "12px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: "bold", color: "#ffffff", textTransform: "uppercase" }}>
               <Palette style={{ width: "14px", height: "14px", color: "#15803d" }} />
               <span>Themes (8 Options available):</span>
             </div>
