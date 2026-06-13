@@ -2,7 +2,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { BentoCard } from "@/components/bento/BentoCard";
 import { StatsBlock, LanguagesBlock, RepositoriesBlock } from "@/components/bento/BentoGridItems";
 import { notFound } from "next/navigation";
-import { Github, Globe, ShieldCheck } from "lucide-react";
+import { FolderGit2, Globe, ShieldCheck } from "lucide-react";
 
 interface PublicPortfolioPageProps {
   params: Promise<{ slug: string }>;
@@ -42,7 +42,8 @@ export default async function PublicPortfolioPage({ params }: PublicPortfolioPag
             rel="noreferrer"
             className="inline-flex items-center gap-2 text-xs font-medium text-[#a1a1aa] hover:text-[#15803d] bg-[#16181a] border border-[#27272a] px-3 py-1.5 rounded-lg transition-all"
           >
-            <Github className="w-3.5 h-3.5" />
+            {/* Fixed: Changed from <Github /> to <FolderGit2 /> */}
+            <FolderGit2 className="w-3.5 h-3.5" />
             GitHub Profile
           </a>
         </div>
